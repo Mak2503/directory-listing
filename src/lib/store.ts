@@ -13,3 +13,5 @@ export const directories = writable<Directory>({
 	is_directory: true,
 	items: []
 });
+
+export const selectedDirectory = writable<Directory[]>([]);
