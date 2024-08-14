@@ -1,15 +1,15 @@
 import { writable } from 'svelte/store';
 
 export type Directory = {
-	id: number;
+	id: string;
 	name: string;
 	is_directory: boolean;
-	children: Directory[];
+	items: Directory[];
 };
 
 export const directories = writable<Directory>({
-	id: 1,
+	id: '1',
 	name: 'ROOT',
 	is_directory: true,
-	children: []
+	items: []
 });
