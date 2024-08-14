@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { Directory } from '$lib/store';
+	import { selectedDirectory, type Directory } from '$lib/store';
 	import AddNewModal from './add-new-modal.svelte';
+	import DirectoryCard from './directory-card.svelte';
 
 	export let directory: Directory;
 
@@ -23,10 +24,11 @@
 			</button>
 		{/if}
 	</div>
-	{#each directory.children as child}
-		<!-- To be created as component -->
-		<div>{child.name}</div>
-	{/each}
+	<div class="directory-card-list">
+		{#each directory.items as item}
+			<DirectoryCard bind:directory={item} />
+		{/each}
+	</div>
 </div>
 {#if showModal}
 	<AddNewModal bind:showModal />
