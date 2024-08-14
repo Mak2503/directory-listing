@@ -1,13 +1,20 @@
 <script lang="ts">
 	import type { Directory } from '$lib/store';
+	import AddNewModal from './add-new-modal.svelte';
 
 	export let directory: Directory;
+
+	let showModal = false;
+
+	const addNew = () => {
+		showModal = true;
+	};
 </script>
 
 <div class="directory-container">
 	<div class="directory-header">
 		<h3>{directory.name}</h3>
-		<button class="header-icon">
+		<button class="header-icon" on:click={addNew}>
 			<img src="/plus.svg" alt="plus" />
 		</button>
 		{#if directory.name !== 'ROOT'}
@@ -21,6 +28,9 @@
 		<div>{child.name}</div>
 	{/each}
 </div>
+{#if showModal}
+	<AddNewModal bind:showModal />
+{/if}
 
 <style>
 	.directory-container {
@@ -35,13 +45,5 @@
 		justify-content: space-between;
 		padding: 8px 16px;
 		border-bottom: 1px solid #e9edf2;
-	}
-
-	.header-icon {
-		border: 1px solid #f0f3ff;
-		border-radius: 4px;
-		padding: 4px;
-		background-color: transparent;
-		cursor: pointer;
 	}
 </style>
