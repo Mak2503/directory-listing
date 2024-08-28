@@ -3,27 +3,47 @@
 	import Modal from './modal.svelte';
 
 	export let showModal = false;
+	export let directory: Directory;
 
 	const form = {
 		type: 'file',
 		name: ''
 	};
 
+	// Function to recursively search for the target directory and add the new directory
+	function findAndAddDirectory(directory: Directory, targetId: string, newDirectory: Directory) {
+		if (directory.id === targetId) {
+			// Target directory found, add the new directory to its items
+			directory.items.push(newDirectory);
+		} else if (directory.items.length > 0) {
+			// Continue searching in the nested items
+			for (let item of directory.items) {
+				findAndAddDirectory(item, targetId, newDirectory);
+			}
+		}
+	}
+
+	// Function to add the new directory to the target directory
+	function addDirectory(targetId: string, newDirectory: Directory) {
+		directories.update((currentDirectory) => {
+			findAndAddDirectory(currentDirectory, targetId, newDirectory);
+			return currentDirectory;
+		});
+	}
+
 	const onSubmit = () => {
 		console.log('Form submitted', form);
 
-		const data: Directory = {
-			id: $directories.children.length + 1,
+		const newDirectory: Directory = {
+			id: `${directory.id}${directory.items.length + 1}`,
 			name: form.name,
 			is_directory: form.type === 'directory',
-			children: []
+			items: []
 		};
 
-		// Adding children to directory
-		directories.set({
-			...$directories,
-			children: [...$directories.children, data]
-		});
+		// Adding items to directory
+		addDirectory(directory.id, newDirectory);
+
 		showModal = false;
 	};
 </script>

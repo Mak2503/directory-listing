@@ -10,6 +10,10 @@
 	const addNew = () => {
 		showModal = true;
 	};
+
+	const removeSelected = () => {
+		selectedDirectory.set($selectedDirectory.filter((item) => item !== directory));
+	};
 </script>
 
 <div class="directory-container">
@@ -19,7 +23,7 @@
 			<img src="/plus.svg" alt="plus" />
 		</button>
 		{#if directory.name !== 'ROOT'}
-			<button class="header-icon">
+			<button class="header-icon" on:click={removeSelected}>
 				<img src="/close.svg" alt="close" />
 			</button>
 		{/if}
@@ -31,12 +35,13 @@
 	</div>
 </div>
 {#if showModal}
-	<AddNewModal bind:showModal />
+	<AddNewModal bind:showModal bind:directory />
 {/if}
 
 <style>
 	.directory-container {
 		width: 325px;
+		min-width: 325px;
 		height: 100vh;
 		border-right: 1px solid #e9edf2;
 	}
@@ -47,5 +52,12 @@
 		justify-content: space-between;
 		padding: 8px 16px;
 		border-bottom: 1px solid #e9edf2;
+	}
+
+	.directory-card-list {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 16px;
 	}
 </style>
